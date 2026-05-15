@@ -3,353 +3,394 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💌 Uma Pergunta Importante</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<title>💌 Pergunta Importante!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;1,400&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --rose: #e8476a;
-    --rose-light: #f9c6d1;
-    --rose-dark: #c0304f;
-    --cream: #fff8f5;
-    --gold: #c9a84c;
-    --text: #3a1a25;
-  }
+:root {
+  --pink:       #ff6b9d;
+  --pink-dark:  #e0447a;
+  --pink-light: #ffd6e7;
+  --blush:      #fff0f6;
+  --lilac:      #c084fc;
+  --text:       #3d1a2e;
+  --muted:      #b07090;
+}
 
-  body {
-    min-height: 100vh;
-    background: var(--cream);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Nunito', sans-serif;
-    overflow: hidden;
-    position: relative;
-  }
+body {
+  min-height: 100vh;
+  background: var(--blush);
+  background-image:
+    radial-gradient(circle at 20% 20%, #ffd6e788 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, #e9d5ff66 0%, transparent 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
 
-  /* Animated petal background */
-  .petals {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .petal {
-    position: absolute;
-    top: -60px;
-    font-size: 1.4rem;
-    animation: fall linear infinite;
-    opacity: 0.6;
-  }
-  @keyframes fall {
-    0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.7; }
-    50%  { transform: translateY(50vh) rotate(180deg) translateX(30px); }
-    100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; }
-  }
+/* ── Floating emojis bg ── */
+.bg-floaties { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.floatie {
+  position: absolute;
+  top: -80px;
+  animation: floatDown linear infinite;
+  user-select: none;
+}
+@keyframes floatDown {
+  0%   { transform: translateY(0) rotate(0deg) translateX(0px);   opacity: 0; }
+  10%  { opacity: .7; }
+  90%  { opacity: .5; }
+  100% { transform: translateY(110vh) rotate(360deg) translateX(40px); opacity: 0; }
+}
 
-  /* Card */
-  .card {
-    position: relative;
-    z-index: 10;
-    background: white;
-    border-radius: 24px;
-    padding: 3rem 2.8rem 2.4rem;
-    max-width: 460px;
-    width: 90%;
-    text-align: center;
-    box-shadow:
-      0 4px 6px rgba(232,71,106,.08),
-      0 20px 60px rgba(232,71,106,.18),
-      0 0 0 1px rgba(232,71,106,.08);
-    animation: cardIn .8s cubic-bezier(.22,1,.36,1) both;
-  }
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(40px) scale(.96); }
-    to   { opacity: 1; transform: translateY(0)  scale(1);    }
-  }
+/* ── Card ── */
+.card {
+  position: relative;
+  z-index: 10;
+  background: white;
+  border-radius: 32px;
+  padding: 2.8rem 2.6rem 2.4rem;
+  max-width: 440px;
+  width: 92%;
+  text-align: center;
+  box-shadow:
+    0 0 0 1.5px var(--pink-light),
+    0 8px 32px rgba(255,107,157,.15),
+    0 32px 80px rgba(255,107,157,.12);
+  animation: cardIn .9s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(50px) scale(.93); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
+}
 
-  .heart-big {
-    font-size: 4.5rem;
-    display: block;
-    margin-bottom: .8rem;
-    animation: pulse 1.4s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1);    }
-    50%       { transform: scale(1.13); }
-  }
+/* little sparkle dots decoration */
+.card::before, .card::after {
+  content: '✦';
+  position: absolute;
+  color: var(--pink-light);
+  font-size: 1.2rem;
+}
+.card::before { top: 1.1rem; left: 1.4rem; }
+.card::after  { bottom: 1.1rem; right: 1.4rem; }
 
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: var(--text);
-    line-height: 1.25;
-    margin-bottom: .7rem;
-  }
-  h1 em {
-    font-style: italic;
-    color: var(--rose);
-  }
+/* ── Bear emoji hero ── */
+.hero {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: .5rem;
+  animation: bounce 2s ease-in-out infinite;
+  line-height: 1;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%       { transform: translateY(-10px) rotate(3deg); }
+}
 
-  .subtitle {
-    font-size: .98rem;
-    color: #9a7080;
-    letter-spacing: .01em;
-    margin-bottom: 2.2rem;
-    line-height: 1.7;
-    font-weight: 600;
-  }
+/* ── Tag line ── */
+.tag {
+  display: inline-block;
+  background: var(--pink-light);
+  color: var(--pink-dark);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .3rem .9rem;
+  border-radius: 99px;
+  margin-bottom: 1.1rem;
+}
 
-  /* Divider */
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: .8rem;
-    margin-bottom: 2rem;
-  }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--rose-light));
-  }
-  .divider::after { background: linear-gradient(to left, transparent, var(--rose-light)); }
-  .divider span { font-size: .75rem; color: var(--rose); }
+h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 2.1rem;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: .6rem;
+}
+h1 em {
+  font-style: italic;
+  color: var(--pink);
+}
 
-  /* Buttons area */
-  .btns {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    min-height: 56px;
-  }
+.subtitle {
+  font-size: .95rem;
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 600;
+  margin-bottom: 1.8rem;
+}
 
-  .btn {
-    padding: .85rem 2rem;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: .04em;
-    cursor: pointer;
-    transition: transform .15s, box-shadow .15s, opacity .15s;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .btn-sim {
-    background: linear-gradient(135deg, var(--rose), var(--rose-dark));
-    color: white;
-    box-shadow: 0 6px 24px rgba(232,71,106,.4);
-  }
-  .btn-sim:hover {
-    transform: translateY(-2px) scale(1.04);
-    box-shadow: 0 10px 30px rgba(232,71,106,.5);
-  }
-  .btn-nao {
-    background: transparent;
-    color: #b09ba5;
-    border: 1.5px solid #e8d5da;
-    min-width: 160px; /* reserva espaço para o texto mais longo */
-  }
-  .btn-nao:hover { color: var(--rose); }
-  /* After first click, NÃO floats freely over the page */
-  .btn-nao.fugindo {
-    position: fixed;
-    min-width: 160px;
-    transition: left .22s cubic-bezier(.22,1,.36,1), top .22s cubic-bezier(.22,1,.36,1), opacity .3s;
-    z-index: 200;
-    transform: none !important; /* sem scale — posição calculada com tamanho real */
-  }
+/* ── Divider ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-bottom: 1.8rem;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--pink-light));
+}
+.divider::after { background: linear-gradient(to left, transparent, var(--pink-light)); }
+.divider span { font-size: .9rem; }
 
-  /* Success screen */
-  .success {
-    display: none;
-    animation: successIn .6s cubic-bezier(.22,1,.36,1) both;
-  }
-  @keyframes successIn {
-    from { opacity: 0; transform: scale(.8); }
-    to   { opacity: 1; transform: scale(1);  }
-  }
-  .success .big-emoji { font-size: 5rem; display: block; margin-bottom: 1rem; }
-  .success h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    color: var(--rose-dark);
-    margin-bottom: .6rem;
-  }
-  .success p { color: #9a7080; font-size: .95rem; line-height: 1.7; }
+/* ── Buttons ── */
+.btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
 
-  /* Counter badge */
-  #counter {
-    margin-top: 1.5rem;
-    font-size: .85rem;
-    color: #c9a0b0;
-    font-weight: 600;
-    letter-spacing: .02em;
-    min-height: 1.2em;
-  }
+.btn {
+  padding: .9rem 1.9rem;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform .15s, box-shadow .15s;
+}
 
-  /* Confetti canvas */
-  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 100; }
+.btn-sim {
+  background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+  color: white;
+  box-shadow: 0 6px 20px rgba(255,107,157,.45);
+}
+.btn-sim:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 28px rgba(255,107,157,.5);
+}
+.btn-sim:active { transform: scale(.97); }
+
+.btn-nao {
+  background: white;
+  color: #c9a0b8;
+  border: 2px solid var(--pink-light);
+  min-width: 170px;
+}
+.btn-nao:hover { border-color: var(--pink); color: var(--pink); }
+
+.btn-nao.fugindo {
+  position: fixed;
+  min-width: 170px;
+  z-index: 500;
+  transition: left .2s cubic-bezier(.22,1,.36,1), top .2s cubic-bezier(.22,1,.36,1), opacity .3s;
+}
+
+/* ── Counter ── */
+#counter {
+  margin-top: 1.4rem;
+  font-size: .88rem;
+  font-weight: 700;
+  color: #e8aac4;
+  min-height: 1.3em;
+  letter-spacing: .01em;
+}
+
+/* ── Success ── */
+.success { display: none; animation: popIn .6s cubic-bezier(.22,1,.36,1) both; }
+@keyframes popIn {
+  from { opacity: 0; transform: scale(.75); }
+  to   { opacity: 1; transform: scale(1);   }
+}
+.success .big-emoji { font-size: 5.5rem; display: block; margin-bottom: .8rem; }
+.success h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  color: var(--pink-dark);
+  margin-bottom: .7rem;
+  line-height: 1.2;
+}
+.success p {
+  color: var(--muted);
+  font-size: .97rem;
+  line-height: 1.8;
+  font-weight: 600;
+}
+.success p strong { color: var(--pink-dark); }
+
+/* ── Confetti canvas ── */
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 100; }
 </style>
 </head>
 <body>
 
 <canvas id="confetti"></canvas>
+<div class="bg-floaties" id="floaties"></div>
 
-<div class="petals" id="petals"></div>
-
-<div class="card" id="card">
-
-  <!-- Main question -->
+<div class="card">
+  <!-- Pergunta -->
   <div id="main">
-    <span class="heart-big">💌</span>
-    <h1>Você quer<br>ser <em>meu(a) namorado(a)?</em></h1>
-    <p class="subtitle">Tem algo que preciso te perguntar com todo<br>o meu coração… 🌹</p>
-    <div class="divider"><span>✦</span></div>
+    <span class="hero">🐻</span>
+    <span class="tag">✨ mensagem especial ✨</span>
+    <h1>Você quer ser<br><em>minha namorada?</em></h1>
+    <p class="subtitle">
+      Eu pensei muito antes de perguntar…<br>
+      mentira, pensei por 5 minutos 😂<br>
+      mas a resposta que quero é séria! 🥺
+    </p>
+    <div class="divider"><span>🌸</span></div>
 
     <div class="btns" id="btns">
-      <button class="btn btn-sim" onclick="aceitar()">❤️ &nbsp;Sim!</button>
+      <button class="btn btn-sim" onclick="aceitar()">💗 Simmmm!</button>
       <button class="btn btn-nao" id="btnNao" onclick="fugir()">Não</button>
     </div>
 
     <p id="counter"></p>
   </div>
 
-  <!-- Success screen -->
+  <!-- Sucesso -->
   <div id="sucesso" class="success">
     <span class="big-emoji">🥰</span>
-    <h2>Eu sabia que ia dizer sim!</h2>
-    <p>Você acabou de fazer o meu dia — na verdade,<br>a minha <em>vida</em> inteira. 💕<br><br>Prometo te fazer sorrir todos os dias.</p>
+    <h2>Eu sabia que diria sim!</h2>
+    <p>
+      Você acabou de me fazer a pessoa<br>
+      mais feliz do mundo inteiro. 🌍💕<br><br>
+      <strong>Prometo te fazer sorrir todo dia.</strong><br>
+      (Inclusive com piadas ruins 😅)
+    </p>
   </div>
-
 </div>
 
 <script>
-  // ── Petals ──────────────────────────────────────────────────────────────
-  const emojis = ['🌸','🌹','💐','🌺','🌷'];
-  const container = document.getElementById('petals');
-  for (let i = 0; i < 18; i++) {
-    const p = document.createElement('div');
-    p.className = 'petal';
-    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    p.style.left = Math.random() * 100 + 'vw';
-    p.style.animationDuration = (6 + Math.random() * 8) + 's';
-    p.style.animationDelay = (Math.random() * 8) + 's';
-    p.style.fontSize = (.9 + Math.random() * .9) + 'rem';
-    container.appendChild(p);
+// ── Floaties background ────────────────────────────────────────────────────
+const floatEmojis = ['🌸','💕','✨','🌷','💖','🦋','🌺','💫','🎀'];
+const fc = document.getElementById('floaties');
+for (let i = 0; i < 22; i++) {
+  const el = document.createElement('div');
+  el.className = 'floatie';
+  el.textContent = floatEmojis[Math.floor(Math.random() * floatEmojis.length)];
+  el.style.left     = Math.random() * 100 + 'vw';
+  el.style.fontSize = (.8 + Math.random() * 1) + 'rem';
+  el.style.animationDuration = (7 + Math.random() * 9) + 's';
+  el.style.animationDelay   = (Math.random() * 10) + 's';
+  fc.appendChild(el);
+}
+
+// ── Mensagens do botão NÃO ─────────────────────────────────────────────────
+let tentativas = 0;
+const msgs = [
+  'Não 😐',
+  'Ainda não 🙃',
+  'Tô fugindo! 🏃‍♀️',
+  'Me pega se puder!',
+  'Nunquinha! 😝',
+  'Tô rindo demais kk',
+  'Vai desistir? 👀',
+  'Clica no Sim logo!',
+  'Tô cansada de fugir',
+  'Tá bem… SIM! 😂',
+];
+
+const counters = [
+  'Ih, o botão fugiu! 😂',
+  'Rápida essa! Tenta de novo 👀',
+  'É sério, ele não vai parar! 🤣',
+  'Ei, o Sim tá bem ali ó 👉💗',
+  'Spoiler: o botão sempre foge 😂',
+  'Você está ficando boa nisso hein 😅',
+  'Câimbra no dedo ainda não? 🤪',
+  'Tá bem, você venceu… clica no Sim! 🥺',
+  'Última chance do Não! 🚨',
+  'Ok ok, só o Sim funciona mesmo 😂',
+];
+
+function fugir() {
+  const btn = document.getElementById('btnNao');
+
+  // Atualiza texto e contador
+  btn.textContent = msgs[Math.min(tentativas, msgs.length - 1)];
+  document.getElementById('counter').textContent =
+    counters[Math.min(tentativas, counters.length - 1)];
+  tentativas++;
+
+  // Na primeira vez: captura posição e vira fixed
+  if (!btn.classList.contains('fugindo')) {
+    const r = btn.getBoundingClientRect();
+    btn.style.left = r.left + 'px';
+    btn.style.top  = r.top  + 'px';
+    btn.classList.add('fugindo');
+    document.body.appendChild(btn);
   }
 
-  // ── "Não" button escape ──────────────────────────────────────────────────
-  let tentativas = 0;
-  const msgs = [
-    'Não',
-    'Não 😅',
-    'Tenho certeza?',
-    'Hmm, não…',
-    'Pensa bem…',
-    'Realmente não?',
-    'Tô esperando 👀',
-    'Que pena…',
-    'Última chance?',
-    'Não existe essa opção 😂',
-  ];
+  // Fade leve
+  btn.style.opacity = String(Math.max(0.45, 1 - tentativas * 0.055));
 
-  function fugir() {
-    tentativas++;
-    const btn = document.getElementById('btnNao');
+  // Mede após pintura para garantir tamanho correto
+  requestAnimationFrame(() => {
+    const btnW   = btn.offsetWidth;
+    const btnH   = btn.offsetHeight;
+    const margin = 20;
+    const maxX   = Math.max(margin, innerWidth  - btnW - margin);
+    const maxY   = Math.max(margin, innerHeight - btnH - margin);
 
-    // label update
-    btn.textContent = msgs[Math.min(tentativas, msgs.length - 1)];
-    document.getElementById('counter').textContent =
-      tentativas === 1 ? 'Ei, o botão fugiu! 😂'
-      : tentativas < 5  ? `Tentativa ${tentativas}… ele não para quieto! 🏃`
-      : `${tentativas} tentativas e nada! Vai logo clicar em Sim! 😂`;
+    btn.style.left = (margin + Math.random() * (maxX - margin)) + 'px';
+    btn.style.top  = (margin + Math.random() * (maxY - margin)) + 'px';
+  });
+}
 
-    // On first click: capture current position, switch to fixed
-    if (!btn.classList.contains('fugindo')) {
-      const r = btn.getBoundingClientRect();
-      btn.style.left = r.left + 'px';
-      btn.style.top  = r.top  + 'px';
-      btn.classList.add('fugindo');
-      document.body.appendChild(btn);
-    }
+// ── Aceitar ────────────────────────────────────────────────────────────────
+function aceitar() {
+  document.getElementById('main').style.display = 'none';
+  document.getElementById('sucesso').style.display = 'block';
+  // Esconde o botão NÃO se ele estiver flutuando pela tela
+  const btnNao = document.getElementById('btnNao');
+  if (btnNao) btnNao.style.display = 'none';
+  launchConfetti();
+}
 
-    // Fade slightly but NO scale — offsetWidth stays accurate
-    btn.style.opacity = String(Math.max(0.5, 1 - tentativas * 0.05));
+// ── Confetti ───────────────────────────────────────────────────────────────
+function launchConfetti() {
+  const canvas = document.getElementById('confetti');
+  const ctx    = canvas.getContext('2d');
+  canvas.width  = innerWidth;
+  canvas.height = innerHeight;
 
-    // Use requestAnimationFrame so browser has painted new text before measuring
-    requestAnimationFrame(() => {
-      const btnW = btn.offsetWidth;
-      const btnH = btn.offsetHeight;
-      const margin = 20;
-      const maxX = innerWidth  - btnW - margin;
-      const maxY = innerHeight - btnH - margin;
+  const symbols = ['💖','💗','💕','🌸','✨','🎀','💫','🦋'];
+  const particles = Array.from({ length: 90 }, () => ({
+    x:      Math.random() * canvas.width,
+    y:      -30 - Math.random() * 200,
+    vy:     1.8 + Math.random() * 3.5,
+    vx:     (Math.random() - .5) * 2.5,
+    rot:    Math.random() * 360,
+    rs:     (Math.random() - .5) * 5,
+    size:   14 + Math.random() * 22,
+    emoji:  symbols[Math.floor(Math.random() * symbols.length)],
+  }));
 
-      // guarantee we never go negative
-      const rx = margin + Math.random() * Math.max(0, maxX - margin);
-      const ry = margin + Math.random() * Math.max(0, maxY - margin);
-
-      btn.style.left = rx + 'px';
-      btn.style.top  = ry + 'px';
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    particles.forEach(p => {
+      if (p.y > canvas.height + 40) return;
+      alive = true;
+      p.x += p.vx; p.y += p.vy; p.rot += p.rs;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.font = p.size + 'px serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.globalAlpha = Math.max(0, 1 - p.y / canvas.height);
+      ctx.fillText(p.emoji, 0, 0);
+      ctx.restore();
     });
+    if (alive) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
-
-  // ── Accept ───────────────────────────────────────────────────────────────
-  function aceitar() {
-    document.getElementById('main').style.display    = 'none';
-    const s = document.getElementById('sucesso');
-    s.style.display = 'block';
-    launchConfetti();
-  }
-
-  // ── Confetti ─────────────────────────────────────────────────────────────
-  function launchConfetti() {
-    const canvas = document.getElementById('confetti');
-    const ctx    = canvas.getContext('2d');
-    canvas.width  = innerWidth;
-    canvas.height = innerHeight;
-
-    const hearts = ['❤️','💕','💖','💗','🌸','✨'];
-    const particles = Array.from({length: 80}, () => ({
-      x: Math.random() * canvas.width,
-      y: -20,
-      vy: 2 + Math.random() * 4,
-      vx: (Math.random() - .5) * 3,
-      rot: Math.random() * 360,
-      rspeed: (Math.random() - .5) * 6,
-      size: 16 + Math.random() * 20,
-      emoji: hearts[Math.floor(Math.random() * hearts.length)],
-      life: 1,
-    }));
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let alive = false;
-      particles.forEach(p => {
-        if (p.y > canvas.height + 40) return;
-        alive = true;
-        p.x  += p.vx;
-        p.y  += p.vy;
-        p.rot += p.rspeed;
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rot * Math.PI / 180);
-        ctx.font = p.size + 'px serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.globalAlpha = Math.max(0, 1 - p.y / canvas.height);
-        ctx.fillText(p.emoji, 0, 0);
-        ctx.restore();
-      });
-      if (alive) requestAnimationFrame(draw);
-      else ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-    draw();
-  }
+  draw();
+}
 </script>
 </body>
 </html>
