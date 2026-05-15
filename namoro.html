@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💌 Uma Pergunta Importante</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --rose: #e8476a;
+    --rose-light: #f9c6d1;
+    --rose-dark: #c0304f;
+    --cream: #fff8f5;
+    --gold: #c9a84c;
+    --text: #3a1a25;
+  }
+
+  body {
+    min-height: 100vh;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lato', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Animated petal background */
+  .petals {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .petal {
+    position: absolute;
+    top: -60px;
+    font-size: 1.4rem;
+    animation: fall linear infinite;
+    opacity: 0.6;
+  }
+  @keyframes fall {
+    0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.7; }
+    50%  { transform: translateY(50vh) rotate(180deg) translateX(30px); }
+    100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; }
+  }
+
+  /* Card */
+  .card {
+    position: relative;
+    z-index: 10;
+    background: white;
+    border-radius: 24px;
+    padding: 3rem 2.8rem 2.4rem;
+    max-width: 460px;
+    width: 90%;
+    text-align: center;
+    box-shadow:
+      0 4px 6px rgba(232,71,106,.08),
+      0 20px 60px rgba(232,71,106,.18),
+      0 0 0 1px rgba(232,71,106,.08);
+    animation: cardIn .8s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(40px) scale(.96); }
+    to   { opacity: 1; transform: translateY(0)  scale(1);    }
+  }
+
+  .heart-big {
+    font-size: 4.5rem;
+    display: block;
+    margin-bottom: .8rem;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1);    }
+    50%       { transform: scale(1.13); }
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: .7rem;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .subtitle {
+    font-size: .95rem;
+    color: #9a7080;
+    letter-spacing: .03em;
+    margin-bottom: 2.2rem;
+    line-height: 1.6;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-bottom: 2rem;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rose-light));
+  }
+  .divider::after { background: linear-gradient(to left, transparent, var(--rose-light)); }
+  .divider span { font-size: .75rem; color: var(--rose); }
+
+  /* Buttons area */
+  .btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    min-height: 56px;
+  }
+
+  .btn {
+    padding: .85rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: .06em;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s, opacity .15s;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .btn-sim {
+    background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+    color: white;
+    box-shadow: 0 6px 24px rgba(232,71,106,.4);
+  }
+  .btn-sim:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 10px 30px rgba(232,71,106,.5);
+  }
+  .btn-nao {
+    background: transparent;
+    color: #b09ba5;
+    border: 1.5px solid #e8d5da;
+  }
+  .btn-nao:hover { color: var(--rose); }
+  /* After first click, NÃO floats freely over the page */
+  .btn-nao.fugindo {
+    position: fixed;
+    transition: left .18s cubic-bezier(.22,1,.36,1), top .18s cubic-bezier(.22,1,.36,1), opacity .3s, transform .3s;
+    z-index: 200;
+  }
+
+  /* Success screen */
+  .success {
+    display: none;
+    animation: successIn .6s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes successIn {
+    from { opacity: 0; transform: scale(.8); }
+    to   { opacity: 1; transform: scale(1);  }
+  }
+  .success .big-emoji { font-size: 5rem; display: block; margin-bottom: 1rem; }
+  .success h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--rose-dark);
+    margin-bottom: .6rem;
+  }
+  .success p { color: #9a7080; font-size: .95rem; line-height: 1.7; }
+
+  /* Counter badge */
+  #counter {
+    margin-top: 1.5rem;
+    font-size: .78rem;
+    color: #ccc;
+    letter-spacing: .05em;
+    min-height: 1.2em;
+  }
+
+  /* Confetti canvas */
+  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 100; }
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="petals" id="petals"></div>
+
+<div class="card" id="card">
+
+  <!-- Main question -->
+  <div id="main">
+    <span class="heart-big">💌</span>
+    <h1>Você quer<br>ser <em>meu(a) namorado(a)?</em></h1>
+    <p class="subtitle">Tem algo que preciso te perguntar com todo<br>o meu coração… 🌹</p>
+    <div class="divider"><span>✦</span></div>
+
+    <div class="btns" id="btns">
+      <button class="btn btn-sim" onclick="aceitar()">❤️ &nbsp;Sim!</button>
+      <button class="btn btn-nao" id="btnNao" onclick="fugir()">Não</button>
+    </div>
+
+    <p id="counter"></p>
+  </div>
+
+  <!-- Success screen -->
+  <div id="sucesso" class="success">
+    <span class="big-emoji">🥰</span>
+    <h2>Eu sabia que ia dizer sim!</h2>
+    <p>Você acabou de fazer o meu dia — na verdade,<br>a minha <em>vida</em> inteira. 💕<br><br>Prometo te fazer sorrir todos os dias.</p>
+  </div>
+
+</div>
+
+<script>
+  // ── Petals ──────────────────────────────────────────────────────────────
+  const emojis = ['🌸','🌹','💐','🌺','🌷'];
+  const container = document.getElementById('petals');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = (6 + Math.random() * 8) + 's';
+    p.style.animationDelay = (Math.random() * 8) + 's';
+    p.style.fontSize = (.9 + Math.random() * .9) + 'rem';
+    container.appendChild(p);
+  }
+
+  // ── "Não" button escape ──────────────────────────────────────────────────
+  let tentativas = 0;
+  const msgs = [
+    'Não',
+    'Não 😅',
+    'Tenho certeza?',
+    'Hmm, não…',
+    'Pensa bem…',
+    'Realmente não?',
+    'Tô esperando 👀',
+    'Que pena…',
+    'Última chance?',
+    'Não existe essa opção 😂',
+  ];
+
+  function fugir() {
+    tentativas++;
+    const btn = document.getElementById('btnNao');
+
+    // label update
+    btn.textContent = msgs[Math.min(tentativas, msgs.length - 1)];
+    document.getElementById('counter').textContent =
+      tentativas === 1 ? 'Ei, o botão fugiu! 😂'
+      : tentativas < 5  ? `Tentativa ${tentativas}… ele não para quieto! 🏃`
+      : `${tentativas} tentativas e nada! Vai logo clicar em Sim! 😂`;
+
+    // On first click: grab current position then switch to fixed floating
+    if (!btn.classList.contains('fugindo')) {
+      const r = btn.getBoundingClientRect();
+      btn.style.left = r.left + 'px';
+      btn.style.top  = r.top  + 'px';
+      btn.style.width = r.width + 'px';
+      btn.classList.add('fugindo');
+      document.body.appendChild(btn);
+    }
+
+    // shrink a little each time (min 70%)
+    const scale = Math.max(0.7, 1 - tentativas * 0.03);
+    btn.style.transform = `scale(${scale})`;
+    btn.style.opacity   = String(Math.max(0.4, 1 - tentativas * 0.06));
+
+    // Read size AFTER text update, factor in scale so button never leaves viewport
+    const btnW = (btn.offsetWidth  || 120) * scale;
+    const btnH = (btn.offsetHeight || 44)  * scale;
+    const margin = 16;
+    const maxX = Math.max(margin, innerWidth  - btnW - margin);
+    const maxY = Math.max(margin, innerHeight - btnH - margin);
+
+    const rx = margin + Math.random() * (maxX - margin);
+    const ry = margin + Math.random() * (maxY - margin);
+
+    btn.style.left = rx + 'px';
+    btn.style.top  = ry + 'px';
+  }
+
+  // ── Accept ───────────────────────────────────────────────────────────────
+  function aceitar() {
+    document.getElementById('main').style.display    = 'none';
+    const s = document.getElementById('sucesso');
+    s.style.display = 'block';
+    launchConfetti();
+  }
+
+  // ── Confetti ─────────────────────────────────────────────────────────────
+  function launchConfetti() {
+    const canvas = document.getElementById('confetti');
+    const ctx    = canvas.getContext('2d');
+    canvas.width  = innerWidth;
+    canvas.height = innerHeight;
+
+    const hearts = ['❤️','💕','💖','💗','🌸','✨'];
+    const particles = Array.from({length: 80}, () => ({
+      x: Math.random() * canvas.width,
+      y: -20,
+      vy: 2 + Math.random() * 4,
+      vx: (Math.random() - .5) * 3,
+      rot: Math.random() * 360,
+      rspeed: (Math.random() - .5) * 6,
+      size: 16 + Math.random() * 20,
+      emoji: hearts[Math.floor(Math.random() * hearts.length)],
+      life: 1,
+    }));
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      particles.forEach(p => {
+        if (p.y > canvas.height + 40) return;
+        alive = true;
+        p.x  += p.vx;
+        p.y  += p.vy;
+        p.rot += p.rspeed;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot * Math.PI / 180);
+        ctx.font = p.size + 'px serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.globalAlpha = Math.max(0, 1 - p.y / canvas.height);
+        ctx.fillText(p.emoji, 0, 0);
+        ctx.restore();
+      });
+      if (alive) requestAnimationFrame(draw);
+      else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    draw();
+  }
+</script>
+</body>
+</html>
