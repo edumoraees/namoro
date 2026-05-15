@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>💌 Uma Pergunta Importante</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -23,7 +23,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Nunito', sans-serif;
     overflow: hidden;
     position: relative;
   }
@@ -93,11 +93,12 @@
   }
 
   .subtitle {
-    font-size: .95rem;
+    font-size: .98rem;
     color: #9a7080;
-    letter-spacing: .03em;
+    letter-spacing: .01em;
     margin-bottom: 2.2rem;
-    line-height: 1.6;
+    line-height: 1.7;
+    font-weight: 600;
   }
 
   /* Divider */
@@ -129,10 +130,10 @@
     padding: .85rem 2rem;
     border: none;
     border-radius: 50px;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 1rem;
-    font-weight: 400;
-    letter-spacing: .06em;
+    font-weight: 700;
+    letter-spacing: .04em;
     cursor: pointer;
     transition: transform .15s, box-shadow .15s, opacity .15s;
     text-transform: uppercase;
@@ -151,13 +152,16 @@
     background: transparent;
     color: #b09ba5;
     border: 1.5px solid #e8d5da;
+    min-width: 160px; /* reserva espaço para o texto mais longo */
   }
   .btn-nao:hover { color: var(--rose); }
   /* After first click, NÃO floats freely over the page */
   .btn-nao.fugindo {
     position: fixed;
-    transition: left .18s cubic-bezier(.22,1,.36,1), top .18s cubic-bezier(.22,1,.36,1), opacity .3s, transform .3s;
+    min-width: 160px;
+    transition: left .22s cubic-bezier(.22,1,.36,1), top .22s cubic-bezier(.22,1,.36,1), opacity .3s;
     z-index: 200;
+    transform: none !important; /* sem scale — posição calculada com tamanho real */
   }
 
   /* Success screen */
@@ -181,9 +185,10 @@
   /* Counter badge */
   #counter {
     margin-top: 1.5rem;
-    font-size: .78rem;
-    color: #ccc;
-    letter-spacing: .05em;
+    font-size: .85rem;
+    color: #c9a0b0;
+    font-weight: 600;
+    letter-spacing: .02em;
     min-height: 1.2em;
   }
 
@@ -264,33 +269,33 @@
       : tentativas < 5  ? `Tentativa ${tentativas}… ele não para quieto! 🏃`
       : `${tentativas} tentativas e nada! Vai logo clicar em Sim! 😂`;
 
-    // On first click: grab current position then switch to fixed floating
+    // On first click: capture current position, switch to fixed
     if (!btn.classList.contains('fugindo')) {
       const r = btn.getBoundingClientRect();
       btn.style.left = r.left + 'px';
       btn.style.top  = r.top  + 'px';
-      btn.style.width = r.width + 'px';
       btn.classList.add('fugindo');
       document.body.appendChild(btn);
     }
 
-    // shrink a little each time (min 70%)
-    const scale = Math.max(0.7, 1 - tentativas * 0.03);
-    btn.style.transform = `scale(${scale})`;
-    btn.style.opacity   = String(Math.max(0.4, 1 - tentativas * 0.06));
+    // Fade slightly but NO scale — offsetWidth stays accurate
+    btn.style.opacity = String(Math.max(0.5, 1 - tentativas * 0.05));
 
-    // Read size AFTER text update, factor in scale so button never leaves viewport
-    const btnW = (btn.offsetWidth  || 120) * scale;
-    const btnH = (btn.offsetHeight || 44)  * scale;
-    const margin = 16;
-    const maxX = Math.max(margin, innerWidth  - btnW - margin);
-    const maxY = Math.max(margin, innerHeight - btnH - margin);
+    // Use requestAnimationFrame so browser has painted new text before measuring
+    requestAnimationFrame(() => {
+      const btnW = btn.offsetWidth;
+      const btnH = btn.offsetHeight;
+      const margin = 20;
+      const maxX = innerWidth  - btnW - margin;
+      const maxY = innerHeight - btnH - margin;
 
-    const rx = margin + Math.random() * (maxX - margin);
-    const ry = margin + Math.random() * (maxY - margin);
+      // guarantee we never go negative
+      const rx = margin + Math.random() * Math.max(0, maxX - margin);
+      const ry = margin + Math.random() * Math.max(0, maxY - margin);
 
-    btn.style.left = rx + 'px';
-    btn.style.top  = ry + 'px';
+      btn.style.left = rx + 'px';
+      btn.style.top  = ry + 'px';
+    });
   }
 
   // ── Accept ───────────────────────────────────────────────────────────────
